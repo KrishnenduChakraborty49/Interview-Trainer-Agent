@@ -22,22 +22,23 @@ public class AgentToolsController {
 
     private Map<String, Object> parseLlmJson(String llmOutput, Map<String, Object> fallback) {
         try {
+            System.out.println("--- RAW LLM OUTPUT ---");
+            System.out.println(llmOutput);
+            System.out.println("----------------------");
+            
             String cleanOutput = llmOutput.trim();
-            // Granite 3 sometimes outputs multiple JSON blocks (e.g. thinking then final answer)
-            // We want the LAST JSON block.
-            if (cleanOutput.lastIndexOf("```json") != -1) {
-                cleanOutput = cleanOutput.substring(cleanOutput.lastIndexOf("```json") + 7).trim();
+            if (cleanOutput.contains("```json")) {
+                cleanOutput = cleanOutput.substring(cleanOutput.indexOf("```json") + 7);
                 if (cleanOutput.contains("```")) {
                     cleanOutput = cleanOutput.substring(0, cleanOutput.indexOf("```")).trim();
                 }
             } else if (cleanOutput.contains("{")) {
-                // Find the first { and the last } as a fallback
                 cleanOutput = cleanOutput.substring(cleanOutput.indexOf("{"));
                 cleanOutput = cleanOutput.substring(0, cleanOutput.lastIndexOf("}") + 1);
             }
             return mapper.readValue(cleanOutput, new TypeReference<Map<String, Object>>() {});
         } catch (Exception e) {
-            System.err.println("Failed to parse LLM output as JSON: " + llmOutput);
+            System.err.println("Failed to parse LLM output as JSON. Error: " + e.getMessage());
             return fallback;
         }
     }
@@ -124,12 +125,12 @@ public class AgentToolsController {
         String answer = (String) request.get("candidateAnswer");
         List<String> expectedPoints = (List<String>) request.get("expectedKeyPoints");
         
-        String prompt = "You are a technical interviewer evaluating a candidate's answer.\n" +
+        String prompt = "You are a strict technical interviewer evaluating a candidate's answer.\n" +
                 "Question: " + question + "\n" +
                 "Candidate Answer: " + answer + "\n" +
                 "Expected Points: " + expectedPoints + "\n\n" +
                 "Evaluate the answer. Give a confidence score (0-100), detailed feedback, and whether the answer is acceptable.\n" +
-                "Output ONLY a valid JSON object with exactly these keys: \"confidenceScore\" (integer), \"feedback\" (string), \"isAcceptable\" (boolean).";
+                "Return ONLY a valid, raw JSON object (without Markdown formatting or backticks) with exactly these keys: \"confidenceScore\" (integer), \"feedback\" (string), \"isAcceptable\" (boolean).";
                 
         String llmResponse = watsonxService.generateText(prompt);
         

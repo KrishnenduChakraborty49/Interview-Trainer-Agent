@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { historyService } from '../../services/historyService';
 import { Loader2, TrendingUp, Target } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const AnalyticsTab = () => {
@@ -24,41 +25,61 @@ const AnalyticsTab = () => {
 
   if (history.length === 0) {
     return (
-      <div className="glass-panel rounded-2xl p-12 text-center">
-        <Target className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-        <h3 className="text-xl font-bold text-slate-700">No Analytics Yet</h3>
-        <p className="text-slate-500 mt-2">Complete a practice interview to see your progress here.</p>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="glass-panel rounded-[2rem] p-16 text-center max-w-2xl mx-auto"
+      >
+        <Target className="w-16 h-16 text-slate-300 mx-auto mb-6" />
+        <h3 className="text-3xl font-extrabold text-slate-800">No Analytics Yet</h3>
+        <p className="text-lg text-slate-500 mt-4">Complete a practice interview to see your progress here.</p>
+      </motion.div>
     );
   }
 
   const averageScore = Math.round(history.reduce((acc, curr) => acc + curr.score, 0) / history.length);
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="glass-panel rounded-2xl p-6 flex items-center gap-4">
-          <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-            <TrendingUp className="w-6 h-6 text-green-600" />
+    <div className="space-y-8 max-w-6xl mx-auto pb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+          className="glass-panel rounded-[2rem] p-8 flex items-center gap-6 hover:shadow-2xl transition-shadow"
+        >
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center shadow-inner">
+            <TrendingUp className="w-8 h-8 text-green-600" />
           </div>
           <div>
-            <p className="text-sm text-slate-500 font-medium">Average Score</p>
-            <h3 className="text-3xl font-bold text-slate-800">{averageScore}/100</h3>
+            <p className="text-base text-slate-500 font-bold uppercase tracking-wider">Average Score</p>
+            <h3 className="text-5xl font-extrabold text-slate-800 tracking-tight mt-1">{averageScore}<span className="text-2xl text-slate-400">/100</span></h3>
           </div>
-        </div>
-        <div className="glass-panel rounded-2xl p-6 flex items-center gap-4">
-          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-            <Target className="w-6 h-6 text-blue-600" />
+        </motion.div>
+        
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+          className="glass-panel rounded-[2rem] p-8 flex items-center gap-6 hover:shadow-2xl transition-shadow"
+        >
+          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center shadow-inner">
+            <Target className="w-8 h-8 text-blue-600" />
           </div>
           <div>
-            <p className="text-sm text-slate-500 font-medium">Interviews Completed</p>
-            <h3 className="text-3xl font-bold text-slate-800">{history.length}</h3>
+            <p className="text-base text-slate-500 font-bold uppercase tracking-wider">Interviews</p>
+            <h3 className="text-5xl font-extrabold text-slate-800 tracking-tight mt-1">{history.length}</h3>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      <div className="glass-panel rounded-2xl p-6">
-        <h3 className="text-lg font-bold text-slate-800 mb-6">Score History</h3>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="glass-panel rounded-[2rem] p-8 hover:shadow-2xl transition-shadow"
+      >
+        <h3 className="text-2xl font-extrabold text-slate-800 mb-8">Score History</h3>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={history} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
@@ -73,23 +94,34 @@ const AnalyticsTab = () => {
             </LineChart>
           </ResponsiveContainer>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="glass-panel rounded-2xl p-6">
-        <h3 className="text-lg font-bold text-slate-800 mb-4">Detailed Feedback</h3>
-        <div className="space-y-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="glass-panel rounded-[2rem] p-8"
+      >
+        <h3 className="text-2xl font-extrabold text-slate-800 mb-6">Detailed Feedback</h3>
+        <div className="space-y-6">
           {[...history].reverse().map((item, idx) => (
-            <div key={idx} className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-              <div className="flex justify-between items-center mb-2">
-                <span className="font-semibold text-slate-800">{item.skill}</span>
-                <span className="text-sm font-bold bg-primary-100 text-primary-700 px-3 py-1 rounded-full">{item.score}/100</span>
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 + (idx * 0.1) }}
+              key={idx} 
+              className="p-6 rounded-2xl bg-white/60 border border-slate-200/50 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-lg font-extrabold text-slate-800">{item.skill}</span>
+                <span className="text-base font-bold bg-primary-100 text-primary-700 px-4 py-1.5 rounded-full shadow-sm">{item.score}/100</span>
               </div>
-              <p className="text-sm text-slate-600">{item.feedback}</p>
-              <p className="text-xs text-slate-400 mt-2">{item.date}</p>
-            </div>
+              <p className="text-base font-medium text-slate-600 leading-relaxed">{item.feedback}</p>
+              <p className="text-sm font-bold text-slate-400 mt-4 uppercase tracking-wider">{item.date}</p>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
