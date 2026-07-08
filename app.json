@@ -1,0 +1,34 @@
+{
+  "project_name": "AI-Powered Interview Trainer Agent",
+  "description": "A custom Agentic AI application built with React, Spring Boot, and IBM watsonx.ai. This replaces the standard Langflow implementation with a robust, enterprise-grade Java backend orchestration.",
+  "models_used": [
+    {
+      "provider": "IBM watsonx.ai",
+      "model_id": "ibm/granite-3-8b-instruct",
+      "purpose": "Core reasoning, skill gap analysis, dynamic question generation, and answer evaluation."
+    }
+  ],
+  "agents": [
+    {
+      "name": "Resume & JD Analyzer Agent",
+      "role": "Extracts skills from resumes and job descriptions and identifies missing skills.",
+      "implementation": "Java Spring Boot Controller (/api/agent/tools/skill-gap-analysis)"
+    },
+    {
+      "name": "Technical Question Generator Agent",
+      "role": "Generates dynamic interview questions and hidden expected key points based on target skills.",
+      "implementation": "Java Spring Boot Controller (/api/agent/tools/generate-question)"
+    },
+    {
+      "name": "Answer Evaluator Agent",
+      "role": "Evaluates candidate responses against expected key points and returns a confidence score (0-100) and actionable feedback.",
+      "implementation": "Java Spring Boot Controller (/api/agent/tools/evaluate-answer)"
+    }
+  ],
+  "architecture": {
+    "frontend": "React, Vite, TailwindCSS, Framer Motion",
+    "backend": "Java 25, Spring Boot 3, REST APIs",
+    "database": "MySQL, Hibernate/JPA",
+    "cloud": "IBM Cloud IAM, IBM watsonx.ai"
+  }
+}
