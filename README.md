@@ -54,15 +54,8 @@ This application was engineered with strict **Production-Level** standards in mi
 
 ## 🏗️ System Architecture & Data Flow
 
-<!-- Paste your architecture diagram image here on GitHub -->
+<img width="1141" height="922" alt="Screenshot 2026-07-07 203055" src="https://github.com/user-attachments/assets/b49cbfaf-bf60-486d-83a0-e5240b258ee2" />
 
-```text
-[ React Frontend ] <--(REST API/JSON)--> [ Spring Boot Backend ] <--(JPA/Hibernate)--> [ MySQL DB ]
-        |                                        |
- (Voice & Text)                           (IAM Auth & Prompts)
-        |                                        |
- [ User Candidate ]                       [ IBM Watsonx.ai (Granite 3) ]
-```
 
 ---
 
