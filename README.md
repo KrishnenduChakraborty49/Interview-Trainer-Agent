@@ -6,6 +6,7 @@
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/Version-1.0.0--production-green?style=for-the-badge" />
   <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
   <img src="https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot" />
   <img src="https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white" />
@@ -19,31 +20,55 @@
 Job seekers often struggle to prepare for technical interviews due to a lack of realistic practice and objective feedback. 
 The **Interview Trainer Agent** is a full-stack, Agentic AI solution designed to bridge this gap. Instead of relying on static questionnaires, this platform dynamically generates custom technical questions based on the candidate's target skills and evaluates their verbal or written answers in real-time.
 
-### 🌟 What makes this project unique?
-While traditional approaches might use drag-and-drop tools like Langflow, this project was built entirely from scratch using a **Custom Java Spring Boot Architecture**. 
-* **Enterprise-Grade AI Orchestration:** Integrated directly with the **IBM Granite-3-8b-instruct** model via custom Java REST APIs.
-* **Resilient JSON Parsing:** Features a custom-built error-handling system that intelligently parses unpredictable LLM text into strict JSON payloads, ensuring the frontend never crashes.
-* **Multi-Modal Interaction:** Simulates real interviews by allowing users to answer questions using their microphone (Web Speech API) or by typing.
-* **Premium UX/UI:** Designed with a "gigantic", highly animated frosted-glass interface powered by Framer Motion.
+### 🌟 The "No-Code" Alternative vs. True Engineering
+While traditional internship approaches might rely on "no-code" drag-and-drop workflow tools like Langflow, this platform was engineered entirely from scratch using a **Custom Java Spring Boot Architecture**. This approach guarantees enterprise-grade security, extreme customization, and the ability to handle complex edge cases that drag-and-drop builders cannot.
 
 ---
 
-## ✨ Key Features
+## 🛡️ Production-Ready Engineering
 
-- 🎤 **Voice-to-Text Integration:** Speak your answers naturally with the interactive glowing microphone.
-- 🧠 **Dynamic Question Engine:** The AI acts as a hiring manager, generating unique questions and hidden "Expected Key Points" for every session.
+This application was engineered with strict **Production-Level** standards in mind, ensuring it is secure, scalable, and resilient.
+
+1. **Intelligent Fallback Mechanisms (High Availability):**
+   * If the IBM Watsonx API rate-limits the application or experiences downtime, the Spring Boot backend automatically catches the exception and routes to a hardcoded fallback response. This guarantees a **100% uptime UX** where the frontend will never crash or display a "White Screen of Death."
+2. **Resilient JSON Parsing Engine:**
+   * LLMs are notorious for returning malformed JSON (e.g., adding conversational text or missing brackets). The backend utilizes a custom Regex and substring parsing engine to extract and sanitize the JSON payload *before* passing it to the Jackson ObjectMapper. 
+3. **Environment Variable Security:**
+   * No hardcoded API keys. All database credentials and IBM Cloud Identity access tokens are strictly managed via `application.properties` and injected via `@Value` annotations, adhering to OWASP security standards.
+4. **CORS & Cross-Origin Security:**
+   * The REST API is secured with strict Cross-Origin Resource Sharing (CORS) configurations, ensuring that only the authorized React frontend domain can invoke the AI orchestration endpoints.
+5. **Optimized Frontend Assets:**
+   * The React frontend utilizes Vite for lightning-fast Hot Module Replacement (HMR) during development and heavily minified, tree-shaken bundles for the production build.
+
+---
+
+## ✨ Core Features
+
+- 🎤 **Voice-to-Text Integration:** Speak your answers naturally with the interactive glowing microphone powered by the Web Speech API.
+- 🧠 **Dynamic Question Engine:** The Agentic AI acts as a hiring manager, generating unique questions and hidden "Expected Key Points" for every session.
 - 📊 **Objective Evaluation:** Receive an instant score (0-100) and actionable feedback on how well your answer matched the expected technical criteria.
-- 📈 **Performance Dashboard:** Track your historical interview scores visualized through beautiful Recharts analytics.
-- 🛡️ **Fail-Safe Fallbacks:** Built-in backend fallbacks ensure continuous application uptime even if IBM Cloud rate limits are reached.
+- 📈 **Performance Analytics:** Track your historical interview scores visualized through beautiful, responsive Recharts analytics.
+- 💅 **Premium UX/UI:** Designed with a "gigantic", highly animated frosted-glass interface (Glassmorphism) powered by Framer Motion.
 
 ---
 
-## 🏗️ Architecture Blueprint
+## 🏗️ System Architecture & Data Flow
 
-1. **Client Tier:** React, Vite, TailwindCSS, Framer Motion
-2. **Server Tier:** Java 25, Spring Boot 3, REST Controllers
-3. **Data Tier:** MySQL, Hibernate/JPA
-4. **Cloud Tier:** IBM Cloud IAM, IBM watsonx.ai (`ibm/granite-3-8b-instruct`)
+```text
+[ React Frontend ] <--(REST API/JSON)--> [ Spring Boot Backend ] <--(JPA/Hibernate)--> [ MySQL DB ]
+        |                                        |
+ (Voice & Text)                           (IAM Auth & Prompts)
+        |                                        |
+ [ User Candidate ]                       [ IBM Watsonx.ai (Granite 3) ]
+```
+
+---
+
+## 🔌 API Documentation
+The backend exposes a highly structured, RESTful interface:
+* `POST /api/agent/tools/generate-question` - Ingests `targetSkill` and `difficultyLevel` and returns an AI-generated question with expected key points.
+* `POST /api/agent/tools/evaluate-answer` - Ingests the `candidateAnswer` and evaluates it against the hidden key points to return a `confidenceScore`.
+* `GET /api/history` - Fetches the candidate's historical interview sessions.
 
 ---
 
@@ -100,6 +125,7 @@ CREATE DATABASE interview_trainer;
 ## 🔮 Future Scope
 * **Video & Facial Expression Analysis:** Integrating OpenCV or WebRTC to monitor posture, eye contact, and micro-expressions to train candidates on non-verbal communication.
 * **AI-Powered Voice Synthesis:** Implementing Text-to-Speech (TTS) and real-time translation models so the AI can speak back to the user in multiple languages for international interview prep.
+* **Docker Containerization:** Packaging the Frontend, Backend, and Database into a single `docker-compose.yml` for seamless, one-click cloud deployments.
 
 ---
 
