@@ -54,53 +54,14 @@ This application was engineered with strict **Production-Level** standards in mi
 
 ## 🏗️ System Architecture & Data Flow
 
-```mermaid
-graph TD
-    %% Define Styles
-    classDef frontend fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px,color:#fff,font-weight:bold
-    classDef backend fill:#10b981,stroke:#047857,stroke-width:2px,color:#fff,font-weight:bold
-    classDef db fill:#f59e0b,stroke:#b45309,stroke-width:2px,color:#fff,font-weight:bold
-    classDef ibm fill:#0f172a,stroke:#475569,stroke-width:2px,color:#fff,font-weight:bold
-    
-    %% Client Tier
-    subgraph Client ["Client Tier (Frontend)"]
-        UI["React User Interface (Framer Motion UI)"]:::frontend
-        Speech["Web Speech API (Voice-to-Text)"]:::frontend
-    end
+<!-- Paste your architecture diagram image here on GitHub -->
 
-    %% Server Tier
-    subgraph Server ["Server Tier (Backend)"]
-        API["Spring Boot REST Controllers"]:::backend
-        WatsonService["Watsonx Orchestration Service"]:::backend
-        JSON["Resilient LLM JSON Parser"]:::backend
-    end
-
-    %% Data Tier
-    subgraph Data ["Data Tier (Storage)"]
-        MySQL[("MySQL Database\n(User Profiles & Analytics)")]:::db
-    end
-
-    %% Cloud Tier
-    subgraph Cloud ["IBM Cloud (watsonx.ai)"]
-        IAM["IBM IAM Identity Token Service"]:::ibm
-        WatsonxAI["IBM watsonx.ai Orchestration"]:::ibm
-        Granite["IBM Granite Model\n(granite-3-8b-instruct)"]:::ibm
-    end
-
-    %% Connections
-    Speech -->|Captures Audio| UI
-    UI <-->|Axios API Calls (JSON)| API
-    
-    API <-->|Hibernate / JPA| MySQL
-    
-    API --> WatsonService
-    WatsonService -->|1. Request Token| IAM
-    IAM -->|2. Secure Token| WatsonService
-    
-    WatsonService -->|3. Prompt & Context| WatsonxAI
-    WatsonxAI -->|Orchestrates| Granite
-    Granite -->|4. Raw Text/JSON Output| JSON
-    JSON -->|5. Parsed Score & Feedback| API
+```text
+[ React Frontend ] <--(REST API/JSON)--> [ Spring Boot Backend ] <--(JPA/Hibernate)--> [ MySQL DB ]
+        |                                        |
+ (Voice & Text)                           (IAM Auth & Prompts)
+        |                                        |
+ [ User Candidate ]                       [ IBM Watsonx.ai (Granite 3) ]
 ```
 
 ---
