@@ -25,6 +25,15 @@ While traditional internship approaches might rely on "no-code" drag-and-drop wo
 
 ---
 
+## 🧩 A Dual-Client Ecosystem (Satisfying the Problem Statement)
+
+The official problem statement requires that *"Users can input their resume or job title, and the agent provides targeted questions, model answers, and improvement tips."* To completely satisfy this across all dimensions, this project features a single robust Java Spring Boot backend that powers **two distinct client interfaces**:
+
+1. **The Live Practice Interface (React App):** Users input their *Job Title* and *Experience Level* into the custom React frontend to conduct a real-time, voice-enabled mock technical interview.
+2. **The Resume Analyzer Interface (IBM Watsonx Orchestrate):** Users upload their *Resume* directly into the enterprise IBM Watsonx Orchestrate UI, which securely connects to the Java backend via an Ngrok OpenAPI tunnel to generate an 8-week learning roadmap and skill-gap analysis.
+
+---
+
 ## 🛡️ Production-Ready Engineering
 
 This application was engineered with strict **Production-Level** standards in mind, ensuring it is secure, scalable, and resilient.
