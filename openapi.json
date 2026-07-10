@@ -1,0 +1,123 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Interview Trainer Agent API",
+    "description": "API for generating and evaluating technical interview questions.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://pajamas-skittle-shortly.ngrok-free.dev",
+      "description": "Ngrok forwarding URL to local Spring Boot"
+    }
+  ],
+  "paths": {
+    "/api/agent/tools/generate-question": {
+      "post": {
+        "summary": "Generate an Interview Question",
+        "operationId": "generateQuestion",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "targetSkill": {
+                    "type": "string",
+                    "description": "The technical skill to test (e.g., Java, React)"
+                  },
+                  "difficultyLevel": {
+                    "type": "string",
+                    "description": "The difficulty level (e.g., Beginner, Intermediate, Expert)"
+                  }
+                },
+                "required": ["targetSkill", "difficultyLevel"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "question": {
+                      "type": "string"
+                    },
+                    "expectedKeyPoints": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/agent/tools/evaluate-answer": {
+      "post": {
+        "summary": "Evaluate a Candidate's Answer",
+        "operationId": "evaluateAnswer",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "question": {
+                    "type": "string",
+                    "description": "The question that was asked"
+                  },
+                  "candidateAnswer": {
+                    "type": "string",
+                    "description": "The candidate's response"
+                  },
+                  "expectedKeyPoints": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The key points the AI expects to see"
+                  }
+                },
+                "required": ["question", "candidateAnswer", "expectedKeyPoints"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful evaluation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "confidenceScore": {
+                      "type": "integer"
+                    },
+                    "feedback": {
+                      "type": "string"
+                    },
+                    "isAcceptable": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
