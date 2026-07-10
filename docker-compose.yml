@@ -1,17 +1,18 @@
 version: '3.8'
 
 services:
-  mysql-db:
-    image: mysql:8.0
+  postgres-db:
+    image: postgres:15
     container_name: interview_trainer_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
-      MYSQL_DATABASE: interview_trainer
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-root}
+      POSTGRES_DB: interview_trainer
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql/data
     networks:
       - agent_network
 
@@ -22,14 +23,14 @@ services:
     container_name: interview_trainer_backend
     restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/interview_trainer?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/interview_trainer
       DB_PASSWORD: ${DB_PASSWORD:-root}
       IBM_CLOUD_API_KEY: ${IBM_CLOUD_API_KEY}
       IBM_WATSONX_PROJECT_ID: ${IBM_WATSONX_PROJECT_ID}
     ports:
       - "8080:8080"
     depends_on:
-      - mysql-db
+      - postgres-db
     networks:
       - agent_network
 
