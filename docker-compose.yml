@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: interview_trainer_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_DATABASE: interview_trainer
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - agent_network
+
+  backend-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: interview_trainer_backend
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/interview_trainer?useSSL=false&serverTimezone=UTC
+      DB_PASSWORD: ${DB_PASSWORD:-root}
+      IBM_CLOUD_API_KEY: ${IBM_CLOUD_API_KEY}
+      IBM_WATSONX_PROJECT_ID: ${IBM_WATSONX_PROJECT_ID}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+    networks:
+      - agent_network
+
+  frontend-ui:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: interview_trainer_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend-api
+    networks:
+      - agent_network
+
+volumes:
+  db_data:
+
+networks:
+  agent_network:
+    driver: bridge
