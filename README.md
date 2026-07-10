@@ -85,6 +85,7 @@ Follow these instructions to run the project locally on your machine.
 * Node.js (v18+)
 * MySQL Server (Running on port 3306)
 * An active **IBM Cloud API Key** and **Watsonx Project ID**
+* *(Optional)* Docker Desktop
 
 ### 1. Database Setup
 Create a new MySQL database named `interview_trainer`.
@@ -124,12 +125,27 @@ CREATE DATABASE interview_trainer;
    ```
    *(The application will launch on `http://localhost:5173`)*
 
+### 4. Docker Deployment (Alternative to Steps 1-3)
+Because this project is fully containerized, you can skip local setup and run the entire stack (Database, Backend, and Frontend) instantly using Docker:
+1. Ensure your IBM credentials are set in the `docker-compose.yml` environment variables.
+2. Open a terminal in the root folder and run:
+   ```bash
+   docker-compose up -d --build
+   ```
+
+### 5. IBM Watsonx Orchestrate & Ngrok Integration
+If you wish to use the IBM Watsonx Orchestrate enterprise UI to analyze resumes and generate 8-week roadmaps:
+1. Start your Spring Boot backend locally (Step 2).
+2. Start an Ngrok tunnel in a new terminal: `ngrok http 8080`
+3. Open `openapi.json` (in the root directory) and replace the placeholder URL with your new Ngrok forwarding URL.
+4. Go to the **IBM Watsonx Orchestrate** dashboard, import `openapi.json` as a custom skill, and assign the `generateQuestion` and `evaluateAnswer` endpoints to your Agent.
+5. You can now chat directly with your IBM cloud agent, and it will route requests securely to your local Java backend!
+
 ---
 
 ## 🔮 Future Scope
 * **Video & Facial Expression Analysis:** Integrating OpenCV or WebRTC to monitor posture, eye contact, and micro-expressions to train candidates on non-verbal communication.
 * **AI-Powered Voice Synthesis:** Implementing Text-to-Speech (TTS) and real-time translation models so the AI can speak back to the user in multiple languages for international interview prep.
-* **Docker Containerization:** Packaging the Frontend, Backend, and Database into a single `docker-compose.yml` for seamless, one-click cloud deployments.
 
 ---
 
