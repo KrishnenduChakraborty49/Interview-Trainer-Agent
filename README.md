@@ -22,6 +22,8 @@ Job seekers often struggle to prepare for technical interviews due to a lack of 
 The **Interview Trainer Agent** is a full-stack, Agentic AI solution designed to bridge this gap. Instead of relying on static questionnaires, this platform dynamically generates custom technical questions based on the candidate's target skills and evaluates their verbal or written answers in real-time.
 
 ### 🌟 The "No-Code" Alternative vs. True Engineering
+> **Deployment Note:** This project was initially engineered and tested locally using a **MySQL** database. However, to ensure a robust, scalable cloud deployment on Render, the database architecture was successfully migrated to **PostgreSQL** (hosted on Neon).
+
 While traditional internship approaches might rely on "no-code" drag-and-drop workflow tools like Langflow, this platform was engineered entirely from scratch using a **Custom Java Spring Boot Architecture**. This approach guarantees enterprise-grade security, extreme customization, and the ability to handle complex edge cases that drag-and-drop builders cannot.
 
 ---
